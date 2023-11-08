@@ -3,14 +3,24 @@ import { CiFacebook } from "react-icons/ci";
 import { TiSocialLinkedinCircular } from "react-icons/ti";
 import { FcGoogle } from "react-icons/fc";
 import login from "../assets/login.svg";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../Provider/AuthProvider";
 
 const Login = () => {
+  const { signIn } = useContext(AuthContext);
   const handleLogin = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
     console.log("input field", email, password);
+    signIn(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log("new user here", user);
+      })
+      .catch((error) => console.log(error));
   };
   return (
     <div>
@@ -66,8 +76,10 @@ const Login = () => {
                   <FcGoogle></FcGoogle>
                 </div>
                 <p>
-                  Have an account?
-                  <span className="text-[#FF3811]">Sign In</span>
+                  Haven,t account?
+                  <Link to="/signUp">
+                    <span className="text-[#FF3811]">Sign In</span>
+                  </Link>
                 </p>
               </div>
             </form>

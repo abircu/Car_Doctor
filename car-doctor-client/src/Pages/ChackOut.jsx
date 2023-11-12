@@ -13,7 +13,7 @@ const ChackOut = () => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
-    const date = form.name.value;
+    const date = form.date.value;
     const email = user?.email;
     const booking = {
       customerName: name,

@@ -6,6 +6,7 @@ import SignUp from "../Pages/SignUp";
 import ChackOut from "../Pages/ChackOut";
 import { URL } from "../config/config";
 import BookingService from "../Pages/BookingService";
+import PrivetRoute from "./PrivetRoute";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +32,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/bookings",
-        element: <BookingService></BookingService>,
+        element: (
+          <PrivetRoute>
+            <BookingService></BookingService>
+          </PrivetRoute>
+        ),
       },
     ],
   },

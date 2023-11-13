@@ -27,7 +27,11 @@ const router = createBrowserRouter([
       },
       {
         path: "checkout/:id",
-        element: <ChackOut></ChackOut>,
+        element: (
+          <PrivetRoute>
+            <ChackOut></ChackOut>
+          </PrivetRoute>
+        ),
         loader: ({ params }) => fetch(`${URL}services/${params.id}`),
       },
       {

@@ -1,30 +1,33 @@
-import React from "react";
+const Book = ({ booking, handleDelete, handleConfirm }) => {
+  const { _id, img, email, service, date, price, status } = booking;
 
-const Book = ({ booking }) => {
-  const { customerName, img, email, service, date, price } = booking;
   return (
     <div>
       <div className="overflow-x-auto">
         <table className="table">
-          {/* head */}
-          {/* <thead>
-            <tr>
-              <th>
-                <label>
-                  <input type="checkbox" className="checkbox" />
-                </label>
-              </th>
-              <th>Name</th>
-              <th>Job</th>
-              <th>Favorite Color</th>
-              <th></th>
-            </tr>
-          </thead> */}
           <tbody>
             <tr>
               <th>
                 <label>
-                  <input type="checkbox" className="checkbox" />
+                  <button
+                    onClick={() => handleDelete(_id)}
+                    className="btn btn-circle btn-sm bg-slate-600 text-white"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
                 </label>
               </th>
               <td>
@@ -36,22 +39,30 @@ const Book = ({ booking }) => {
                   </div>
                 </div>
               </td>
-              <td>
+              {/* <td>
                 {customerName}
                 <br />
                 <span className="badge badge-ghost badge-sm">{email}</span>
-              </td>
+              </td> */}
               <td>{service}</td>
               <td>{date}</td>
               <td>{price}</td>
               <th>
-                <button className="btn btn-ghost btn-xs">details</button>
+                {status === "confirm" ? (
+                  <span className="font-bold text-primary">confirm</span>
+                ) : (
+                  <button
+                    onClick={() => handleConfirm(_id)}
+                    className="btn btn-ghost btn-xs"
+                  >
+                    Please Confirm
+                  </button>
+                )}
               </th>
             </tr>
           </tbody>
         </table>
       </div>
-      ;
     </div>
   );
 };

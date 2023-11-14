@@ -1,5 +1,6 @@
 const express=require('express');
 const jwt=require('jsonwebtoken');
+const cookieParser=require('cookie-parser')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const cors=require('cors');
@@ -12,6 +13,7 @@ app.use(cors({
   credentials:true
 }));
 app.use(express.json());
+app.use(cookieParser());
 
 // mongodb connection
 const uri =`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.wj189yg.mongodb.net/?retryWrites=true&w=majority`;
@@ -67,6 +69,7 @@ async function run() {
     // get some bookings data
     app.get('/bookings',async(req, res)=>{
       console.log(req.query.email)
+      console.log('token',req.cookies.token)
       let query={}
       if(req.query?.email){
         query={email: req.query.email}

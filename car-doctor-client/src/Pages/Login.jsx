@@ -6,6 +6,8 @@ import login from "../assets/login.svg";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
+import axios from "axios";
+import { URL } from "../config/config";
 
 const Login = () => {
   const { signIn } = useContext(AuthContext);
@@ -20,9 +22,16 @@ const Login = () => {
     console.log("input field", email, password);
     signIn(email, password)
       .then((result) => {
-        const user = result.user;
-        console.log("new user here", user);
-        navigate(location?.state ? location?.state : "/");
+        const loggeInuser = result.user;
+        console.log("new user here", loggeInuser);
+        const user = { email };
+        // get access token
+        axios.post(`${URL}jwt`, user, { withCredentials: true }).then((res) => {
+          console.log(res.data);
+          if (res.data.success) {
+            navigate(location?.state ? location?.state : "/");
+          }
+        });
       })
       .catch((error) => console.log(error));
   };

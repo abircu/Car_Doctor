@@ -3,18 +3,22 @@ import { AuthContext } from "../Provider/AuthProvider";
 import { URL } from "../config/config";
 import Book from "./Book";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const BookingService = () => {
   const { user } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
   const url = `${URL}bookings?email=${user.email}`;
   useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setBookings(data);
-      });
-  }, []);
+    axios.get(url, { withCredentials: true }).then((res) => {
+      setBookings(res.data);
+    });
+    // fetch(url)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setBookings(data);
+    //   });
+  }, [url]);
 
   const handleDelete = (id) => {
     const proceed = confirm("are you sure you want to delete");

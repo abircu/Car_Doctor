@@ -26,6 +26,38 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
+// midlewares
+const logger= async(req, res, next)=>{
+  console.log('called:',req.host, req.originalUrl)
+  next();
+}
+
+// midleware for verify access token
+// const verifyToken=async(req, res, next)=>{
+//   const token=req.cookies?.token;
+//   console.log('value of token in middleware', token);
+//   if(!token){
+//     return res.status(401).send({message:'not authorized'})
+//   }
+//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded)=>{
+//    if(err){
+//     console.log(err);
+//     return res.status(401).send({message:'unauthorized'})
+//    } 
+//   //  if token is vaid then it would be decoded
+//   console.log('value in the token',decoded)
+//   req.user=decoded
+//   next();
+//   })
+  
+// }
+
+const verifyToken =async(req, res, next)=>{
+  const token =req.cookies?.token;
+}
+
+
+
 
 async function run() {
   try {
@@ -36,7 +68,7 @@ async function run() {
     const bookingCollection=client.db('carDoctor').collection('bookings');
     
     // auth related api
-    app.post('/jwt',async(req, res)=>{
+    app.post('/jwt', logger, async(req, res)=>{
       const user =req.body;
       console.log('user data',user)
       const token=jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'1h'} )
@@ -49,7 +81,7 @@ async function run() {
     })
 
     // Services relted api 
-    app.get('/services',async(req, res) =>{
+    app.get('/services', logger, async(req, res) =>{
         const serviceData=serviceCollection.find();
         const result =await serviceData.toArray()
         res.send(result)
@@ -67,9 +99,10 @@ async function run() {
       res.send(result)
     })
     // get some bookings data
-    app.get('/bookings',async(req, res)=>{
+    app.get('/bookings', logger, verifyToken, async(req, res)=>{
       console.log(req.query.email)
-      console.log('token',req.cookies.token)
+      // console.log('token',req.cookies.token)
+      console.log('user in the valid token', req.user)
       let query={}
       if(req.query?.email){
         query={email: req.query.email}

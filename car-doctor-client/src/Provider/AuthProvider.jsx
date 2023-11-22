@@ -7,6 +7,7 @@ import {
   signOut,
 } from "firebase/auth";
 import app from "../Firebase/firebase.config";
+import { URL } from "../config/config";
 export const AuthContext = createContext();
 const auth = getAuth(app);
 
@@ -26,6 +27,15 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser);
       console.log("current usser", currentUser);
       setLoading(false);
+      // if user exists then issue a token
+      if (currentUser) {
+        const loggedUser = { email: currentUser.email };
+        axios
+          .post(`${URL}jwt`, loggedUser, { withCredentials: true })
+          .then((res) => {
+            console.log("token response", res.data);
+          });
+      }
     });
     return () => {
       return unsubscribe();

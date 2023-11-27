@@ -85,6 +85,12 @@ async function run() {
       .send({success:true})
     })
 
+    // logout api
+    app.post('/logout',async(req, res)=>{
+      const user =req.body;
+      res.clearCookie('token',{maxAge: 0}).send({success: true})
+    })
+
     // Services relted api 
     app.get('/services', logger, async(req, res) =>{
         const serviceData=serviceCollection.find();

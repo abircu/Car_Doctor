@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import useServices from "../../Hooks/useServices";
 import ServiceCard from "./ServiceCard";
 
 const Services = () => {
-  const [Services, setServices] = useState([]);
-  useEffect(() => {
-    fetch("http://localhost:5000/services")
-      .then((res) => res.json())
-      .then((data) => setServices(data));
-  }, []);
+  const Services = useServices();
+  // const [Services, setServices] = useState([]);
+  // useEffect(() => {
+  //   fetch("http://localhost:5000/services")
+  //     .then((res) => res.json())
+  //     .then((data) => setServices(data));
+  // }, []);
   return (
     <div className="py-4 md:py-6 lg:py-10">
       <h1 className="text-xl font-semibold text-red-500 text-center mt-10">

@@ -4,13 +4,14 @@ import { TiSocialLinkedinCircular } from "react-icons/ti";
 import { FcGoogle } from "react-icons/fc";
 import login from "../assets/login.svg";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../Provider/AuthProvider";
+// import { useContext } from "react";
+// import { AuthContext } from "../Provider/AuthProvider";
 import axios from "axios";
 import { URL } from "../config/config";
+import UseAuth from "../Hooks/UseAuth";
 
 const Login = () => {
-  const { signIn } = useContext(AuthContext);
+  const { signIn } = UseAuth();
   const location = useLocation();
   const navigate = useNavigate();
   console.log(location);

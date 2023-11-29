@@ -28,13 +28,13 @@ const client = new MongoClient(uri, {
 });
 // midlewares
 const logger= async(req, res, next)=>{
-  console.log('called:',req.host, req.originalUrl)
+  console.log('logged info called:',req.host, req.originalUrl)
   next();
 }
 
 // midleware for verify access token
 const verifyToken=async(req, res, next)=>{
-  const token=req.cookies?.token;
+  const token=req?.cookies?.token;
   console.log('value of token in middleware', token);
   if(!token){
     return res.status(401).send({message:'not authorized'})
@@ -113,7 +113,11 @@ async function run() {
     app.get('/bookings', logger, verifyToken, async(req, res)=>{
       console.log(req.query.email)
       // console.log('token',req.cookies.token)
-      console.log('user in the valid token', req.user)
+      console.log('cookies here',req.cookies)
+      console.log('token owner info', req.user)
+      if(req.user.email !==req.query.email){
+        return res.status(403).send({message:'forbidden access'})
+      }
       let query={}
       if(req.query?.email){
         query={email: req.query.email}
